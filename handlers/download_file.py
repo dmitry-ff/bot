@@ -2,7 +2,7 @@ import os
 import logging
 logging.basicConfig(level=logging.INFO)
 import pandas as pd
-from utils import adjust_columns_width
+from utils.adjust_columns_width import adjust_columns_width
 
 def download_file_cb(bot, event, mentions):
     try:
