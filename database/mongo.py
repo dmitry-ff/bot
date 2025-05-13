@@ -1,17 +1,20 @@
 from pymongo import MongoClient
-from config import MONGODB_URI, DB_NAME
 import logging
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 class MongoDB:
     def __init__(self):
         try:
             self.client = MongoClient(
-                MONGODB_URI,
+                os.getenv("MONGODB_URI"),
                 serverSelectionTimeoutMS=5000
             )
 
             self.client.server_info()
-            self.db = self.client[DB_NAME]
+            self.db = self.client[os.getenv("MONGODB_NAME")]
             self.mentions = self.db.mentions
             logging.info("Successfully connected to MongoDB")
         except Exception as e:
