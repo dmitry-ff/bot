@@ -1,32 +1,18 @@
 from config import FLAG
 import logging
 logging.basicConfig(level=logging.INFO)
-from datetime import date
-from utils import text_processing
+from utils import text_processing, check_same_user
+from handlers import save_mention
 
 def message_listen_cb(event, db):
     try:
-        if FLAG in event.text and event.data["parts"]:
-            transformed_message = text_processing(event.text, event.data["parts"])
+        parts = event.data["parts"]
 
-            print(transformed_message)
-            for part in event.data["parts"]:
+        if FLAG in event.text and parts and not check_same_user(event.data["from"]["userId"], parts):
+            transformed_message = text_processing(event.text,parts)
+            for part in parts:
                 if part["type"] == "mention":
                     logging.info(f"Processing mention: {part}")
-                    print(part)
-                    today = date.today().strftime('%Y-%m-%d')
-                    mention_by = event.data["from"]
-                    mentioned = part["payload"]
-                    last_name = mentioned.get("lastName", "")
-
-                    mention_data = {
-                        "message_text": transformed_message,
-                        "mention_by": f"{mention_by["lastName"]} {mention_by["firstName"]}",
-                        "mention_by_id": mention_by["userId"],
-                        "mentioned": f"{mentioned['firstName']} {last_name}".strip(),
-                        "mentioned_id": mentioned["userId"],
-                        "datetime": today
-                    }
-                    db.save_mention(mention_data)
+                    save_mention(event, part, db, transformed_message)
     except Exception as e:
         logging.error(f"Error in message_cb: {e}")
