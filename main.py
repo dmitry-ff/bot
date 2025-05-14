@@ -7,8 +7,7 @@ from dotenv import load_dotenv
 import os
 
 
-from handlers.download_file import  download_file_cb
-from handlers.message_listen import message_listen_cb
+from handlers import  download_file_cb, message_listen_cb
 
 from database.mongo import MongoDB
 

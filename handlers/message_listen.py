@@ -2,7 +2,7 @@ from config import FLAG
 import logging
 logging.basicConfig(level=logging.INFO)
 from datetime import date
-from utils.text_processing import text_processing
+from utils import text_processing
 
 def message_listen_cb(event, db):
     try:
