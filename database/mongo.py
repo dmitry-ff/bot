@@ -58,3 +58,15 @@ class MongoDB:
         except Exception as e:
             logging.error(f"Error while getting mention: {e}")
             raise
+    def get_mention_by_msg_id(self, msg_id):
+        try:
+            return self.mentions.find_one({"msgId": msg_id}, {"_id": 0})
+        except Exception as e:
+            logging.error(f"Error while getting mention: {e}")
+            raise
+    def delete_mentions(self, msg_id):
+        try:
+            return self.mentions.delete_many({"msgId": msg_id})
+        except Exception as e:
+            logging.error(f"Error while deleting mentions: {e}")
+            raise

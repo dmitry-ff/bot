@@ -1,4 +1,4 @@
-def edit_message(event, bd):
+def edit_message(event, db):
     msgId = event.data["msgId"]
 
 
