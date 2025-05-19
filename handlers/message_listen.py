@@ -1,12 +1,12 @@
 from config import FLAG
 import logging
 logging.basicConfig(level=logging.INFO)
-from utils import text_processing, check_same_user
-from handlers import save_mention
+from utils import text_processing, check_same_user, get_mentions
+from handlers.save_mention import save_mention
 
 def message_listen_cb(event, db):
     try:
-        parts = event.data["parts"]
+        parts = get_mentions(event.data["parts"])
 
         if FLAG in event.text and parts and not check_same_user(event.data["from"]["userId"], parts):
             transformed_message = text_processing(event.text,parts)
