@@ -38,5 +38,3 @@ def edit_message(event, db):
 
     for obj in to_update:
         db.update_message(transformed_data, msg_id, obj["payload"]["userId"])
-
-

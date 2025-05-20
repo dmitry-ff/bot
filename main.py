@@ -25,6 +25,7 @@ def new_message_cb(bot, event):
         data = list(db.get_mentions())
         download_file_cb(bot, event, data)
 
+#TODO: изучить, как работает хендлер для получения эвента удаления сообщения
 def delete_message_cb(bot, event):
     print(bot, event)
 
@@ -34,7 +35,6 @@ def edit_message_cb(bot, event):
 
     if chat_type == GROUP_CHAT:
         edit_message(event, db)
-
 
 bot.dispatcher.add_handler(DeletedMessageHandler(callback=delete_message_cb))
 bot.dispatcher.add_handler(EditedMessageHandler(callback=edit_message_cb))
