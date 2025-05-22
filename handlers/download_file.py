@@ -1,11 +1,11 @@
 import os
 import logging
-logging.basicConfig(level=logging.INFO)
 import pandas as pd
 from utils import adjust_columns_width
+from datetime import date
 
 def download_file_cb(bot, event, mentions):
-    excel_filename = "Отчёт.xlsx"
+    excel_filename = f"Отчёт {date.today().strftime('%Y-%m-%d')}.xlsx"
     try:
         df = pd.DataFrame(mentions)
         desired_columns = ["message_text", "mention_by", "mention_by_id", "mentioned", "mentioned_id", "datetime"]

@@ -1,18 +1,18 @@
 from datetime import date
 
-def save_mention(event, part, db, message):
-    today = date.today().strftime('%Y-%m-%d')
+def save_mention(event, part, storage, message):
     mention_by = event.data["from"]
     mentioned = part["payload"]
-    last_name = mentioned.get("lastName", "")
+    datetime = date.today().strftime('%Y-%m-%d')
 
     mention_data = {
         "message_text": message,
-        "mention_by": f"{mention_by["lastName"]} {mention_by["firstName"]}",
-        "mention_by_id": mention_by["userId"],
-        "mentioned": f"{mentioned['firstName']} {last_name}".strip(),
-        "mentioned_id": mentioned["userId"],
-        "datetime": today,
-        "msgId": event.data["msgId"]
+        "mention_by": f"{mention_by.get('lastName', '')} {mention_by.get('firstName', '')}".strip(),
+        "mention_by_id": mention_by.get("userId"),
+        "mentioned": f"{mentioned.get('firstName', '')} {mentioned.get('lastName', '')}".strip(),
+        "mentioned_id": mentioned.get("userId"),
+        "datetime": datetime,
+        "msg_id": event.data.get("msgId")
     }
-    db.save_mention(mention_data)
+
+    storage.save_mention(mention_data)
