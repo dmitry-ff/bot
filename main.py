@@ -4,7 +4,6 @@ import atexit
 from config import GROUP_CHAT, PRIVATE_CHAT, ONBOARDING_PHRASE, DEFAULT_PHRASE, START, BOT_TOKEN
 import logging
 from dotenv import load_dotenv
-import os
 from handlers import  message_listen_cb, edit_message, buttons_answer_cb
 from database.mongo import MongoDB
 from utils import send_keyboard, not_allowed
