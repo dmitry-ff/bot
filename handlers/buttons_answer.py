@@ -15,7 +15,6 @@ def buttons_answer_cb(bot: Bot, event, db):
             )
             send_keyboard(_bot=bot, event=event, text=NEW_FILE_PHRASE)
         else:
-            print(event)
             bot.answer_callback_query(
                 query_id=event.data["queryId"],
                 text="",
