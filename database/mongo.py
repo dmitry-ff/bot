@@ -1,8 +1,8 @@
 from pymongo import MongoClient
 import logging
 from dotenv import load_dotenv
-import os
 from interfaces.storage import Storage
+from config import MONGODB_URI, MONGODB_NAME
 
 from utils import handle_mongo_errors
 
@@ -14,12 +14,12 @@ class MongoDB(Storage):
     def __init__(self):
         try:
             self.client = MongoClient(
-                os.getenv("MONGODB_URI"),
+                MONGODB_URI,
                 serverSelectionTimeoutMS=5000
             )
 
             self.client.server_info()
-            self.db = self.client[os.getenv("MONGODB_NAME")]
+            self.db = self.client[MONGODB_NAME]
             self.mentions = self.db.mentions
             self.access = self.db.access
             logging.info("Successfully connected to MongoDB")

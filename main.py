@@ -1,7 +1,7 @@
 from bot.bot import Bot
 from bot.handler import MessageHandler, DeletedMessageHandler, EditedMessageHandler, StartCommandHandler, BotButtonCommandHandler
 import atexit
-from config import GROUP_CHAT, PRIVATE_CHAT, ONBOARDING_PHRASE, DEFAULT_PHRASE, START
+from config import GROUP_CHAT, PRIVATE_CHAT, ONBOARDING_PHRASE, DEFAULT_PHRASE, START, BOT_TOKEN
 import logging
 from dotenv import load_dotenv
 import os
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 db = MongoDB()
 atexit.register(db.close)
 
-bot = Bot(token=os.getenv("BOT_TOKEN"))
+bot = Bot(token=BOT_TOKEN)
 
 def start_cb(_bot: Bot, event):
     if db.check_permission(event.data["from"]["userId"]):
