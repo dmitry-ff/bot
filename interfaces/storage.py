@@ -28,3 +28,11 @@ class Storage(ABC):
     @abstractmethod
     def delete_mentions(self, msg_id: str):
         pass
+
+    @abstractmethod
+    def check_permission(self,  user_id: str):
+        pass
+
+    @abstractmethod
+    def add_allowed_user(self,  user_id: str):
+        pass

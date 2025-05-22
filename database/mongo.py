@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 from interfaces.storage import Storage
 
-from utils.decorators import handle_mongo_errors
+from utils import handle_mongo_errors
 
 load_dotenv()
 
@@ -21,6 +21,7 @@ class MongoDB(Storage):
             self.client.server_info()
             self.db = self.client[os.getenv("MONGODB_NAME")]
             self.mentions = self.db.mentions
+            self.access = self.db.access
             logging.info("Successfully connected to MongoDB")
         except Exception as e:
             logging.error(f"MongoDB connection error: {e}")
@@ -74,3 +75,14 @@ class MongoDB(Storage):
         result = self.mentions.delete_many({"msg_id": msg_id})
         logger.info(f"Deleted {result.deleted_count} documents with msg_id: {msg_id}")
         return result.deleted_count
+
+    @handle_mongo_errors
+    def check_permission(self, user_id):
+        result = self.access.find_one({"user_id": user_id}, {"_id": 0})
+        return True if result else False
+
+    @handle_mongo_errors
+    def add_allowed_user(self, user_id):
+        self.access.insert_one({"user_id": user_id})
+        logger.info(f"Added allowed user {user_id}")
+

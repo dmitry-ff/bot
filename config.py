@@ -2,7 +2,6 @@ FLAG = "🍏"
 PRIVATE_CHAT = "private"
 GROUP_CHAT = "group"
 MENTION = "mention"
-DOWNLOAD_ACCESS = ["matrenin@ddplanet.ru", "stepina@ddplanet.ru", "polosina@ddplanet.ru", "zibina@ddplanet.ru"]
 ONBOARDING_PHRASE = "Привет! Данный бот умеет создавать отчёт, нажми кнопку, чтобы попробовать ⬇️"
 DEFAULT_PHRASE = "Для создания отчёта нажми кнопку ⬇️"
 NEW_FILE_PHRASE = "Для создания нового файла нажми кнопку ⬇️"
