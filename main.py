@@ -3,12 +3,10 @@ from bot.handler import MessageHandler, DeletedMessageHandler, EditedMessageHand
 import atexit
 from config import GROUP_CHAT, PRIVATE_CHAT, ONBOARDING_PHRASE, DEFAULT_PHRASE, START, BOT_TOKEN
 import logging
-from dotenv import load_dotenv
 from handlers import  message_listen_cb, edit_message, buttons_answer_cb
 from database.mongo import MongoDB
 from utils import send_keyboard, not_allowed
 
-load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -43,7 +41,7 @@ def delete_message_cb(_bot, event):
     print(_bot, event)
 
 
-def edit_message_cb(_, event):
+def edit_message_cb(bot, event):
     chat_type = event.data["chat"]["type"]
 
     if chat_type == GROUP_CHAT:

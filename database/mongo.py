@@ -1,12 +1,10 @@
 from pymongo import MongoClient
 import logging
-from dotenv import load_dotenv
 from interfaces.storage import Storage
 from config import MONGODB_URI, MONGODB_NAME
 
 from utils import handle_mongo_errors
 
-load_dotenv()
 
 logger = logging.getLogger(__name__)
 
