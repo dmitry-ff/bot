@@ -18,12 +18,31 @@ class MongoDB(Storage):
 
             self.client.server_info()
             self.db = self.client[MONGODB_NAME]
+
+            self._init_collections()
+
             self.mentions = self.db.mentions
             self.access = self.db.access
             logging.info("Successfully connected to MongoDB")
         except Exception as e:
             logging.error(f"MongoDB connection error: {e}")
             raise
+
+    def _init_collections(self):
+        if "access" not in self.db.list_collection_names():
+            self.db.access.insert_many([
+                {"user_id": "kozlov@ddplanet.ru"},
+                {"user_id": "stepina@ddplanet.ru"},
+                {"user_id": "matrenin@ddplanet.ru"},
+                {"user_id": "polosina@ddplanet.ru"},
+                {"user_id": "zibina@ddplanet.ru"},
+
+            ])
+            logger.info("Created 'access' collection with default users")
+
+        if "mentions" not in self.db.list_collection_names():
+            self.db.create_collection("mentions")
+            logger.info("Created empty 'mentions' collection")
 
     def close(self):
         self.client.close()
@@ -57,7 +76,7 @@ class MongoDB(Storage):
 
     @handle_mongo_errors
     def get_mention_by_msg_id(self, msg_id):
-        cursor = self.mentions.find_one({"msg_id": msg_id}, {"_id": 0})
+        cursor = self.mentions.find({"msg_id": msg_id}, {"_id": 0})
         result = list(cursor)
         logger.info(f"Fetched {len(result)} documents with msg_id: {msg_id}")
         return result

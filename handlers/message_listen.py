@@ -15,5 +15,6 @@ def message_listen_cb(event, storage):
                 if part_payload["userId"] != sender_id:
                     logging.info(f"Processing mention: {part_payload}")
                     save_mention(event, part, storage, transformed_message)
+                    break
     except Exception as e:
         logging.error(f"Error in message_listen_cb: {e}")

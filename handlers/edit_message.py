@@ -17,7 +17,9 @@ def edit_message(event, storage):
     # добавит записи на каждого упомянутого, если к сообщению был добавлен флаг
     if FLAG in message and not storage.get_mention_by_msg_id(msg_id):
         for part in event.data["parts"]:
-            save_mention(event, part, storage, transformed_data)
+            if part["payload"]["userId"] != event.data["from"]["userId"]:
+                save_mention(event, part, storage, transformed_data)
+                break
         return
 
     db_dict = {(obj['mentioned_id']): obj for obj in mentions_by_msg_id}
@@ -31,7 +33,9 @@ def edit_message(event, storage):
         storage.delete_mention(msg_id, obj["mentioned_id"])
 
     for obj in to_create:
-        save_mention(event, obj, storage, transformed_data)
+        if obj["payload"]["userId"] != event.data["from"]["userId"] and not to_update:
+            save_mention(event, obj, storage, transformed_data)
+            break
 
     for obj in to_update:
         storage.update_message(transformed_data, msg_id, obj["payload"]["userId"])
