@@ -1,12 +1,13 @@
 from handlers import  save_mention
-from utils import  text_processing, get_mentions
+from utils import  text_processing, get_mentions, normalize_part, get_file_caption
 from config import FLAG
 
 def edit_message(event, storage):
     msg_id = event.data["msgId"]
-    mentions_from_event = get_mentions(event.data.get("parts"))
-    message = event.data["text"]
-    transformed_data = text_processing(event.data["text"], mentions_from_event)
+    mentions_from_event = get_mentions(event.data["parts"]) if event.data.get("text", "") != "" else normalize_part(get_file_caption(event))
+    message = event.text if event.data.get("text", "") != "" else get_file_caption(event)
+
+    transformed_data = text_processing(message, mentions_from_event)
     mentions_by_msg_id = list(storage.get_mentions_by_msg_id(msg_id))
 
     # удалит все сообщения, если при редактировании флаг был удалён

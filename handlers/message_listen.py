@@ -1,16 +1,21 @@
-from config import FLAG
+from bot.bot import Bot
+
+from config import FLAG, FILE
 import logging
 from utils import text_processing, get_mentions
 from handlers.save_mention import save_mention
+from utils import normalize_part, get_file_caption
 
 def message_listen_cb(event, storage):
     try:
-        parts = get_mentions(event.data["parts"])
+        corrected_parts = get_mentions(event.data["parts"]) if isinstance(event.text, str) else normalize_part(get_file_caption(event))
+        corrected_text = event.text if isinstance(event.text, str) else get_file_caption(event)
         sender_id = event.data["from"]["userId"]
 
-        if FLAG in event.text and parts:
-            transformed_message = text_processing(event.text, parts)
-            for part in parts:
+        if FLAG in corrected_text and corrected_parts:
+            transformed_message = text_processing(corrected_text, corrected_parts)
+            for part in corrected_parts:
+
                 part_payload = part["payload"]
                 if part_payload["userId"] != sender_id:
                     logging.info(f"Processing mention: {part_payload}")
